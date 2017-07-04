@@ -5,13 +5,14 @@ using Microsoft.Bot.Connector;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 
 namespace Bot_Application1.Dialogs
 {
     [Serializable]
     public class RootDialog : IDialog<object>
     {
-        private List<string> ColorOptions = new List<string> { "Blonde", "Amber", "Fruit", "Dark" };
+        private List<string> ColorOptions = new List<string> { "Blond", "Amber", "Fruit", "Dark" };
         private List<string> TasteOptions = new List<string> { "Bitter", "Sweet", "Sour" };
         private List<string> OptionNotFound = new List<string>();
         private Random randomizer = new Random(System.DateTime.Now.Millisecond);
@@ -83,11 +84,36 @@ namespace Bot_Application1.Dialogs
 
         private string SelectedBeer(string color, string taste)
         {
-            var possiblebeers = File.ReadLines("./beerlist.csv");
+            var filepath = "https://raw.githubusercontent.com/vermegi/TheBeerBot/master/src/Bot%20Application1/beerlist.csv";
+            var webrequest = WebRequest.Create(filepath);
+            var strContent = string.Empty;
+            using (var response = webrequest.GetResponse())
+            {
+                using (var content = response.GetResponseStream())
+                {
+                    using (var reader = new StreamReader(content))
+                    {
+                        strContent = reader.ReadToEnd();
+                    }
+                }
+            }
+            var possiblebeers = strContent.Split('\n');
 
-            var filteredList = possiblebeers.Where(pb => pb.Contains(color) && pb.Contains(taste));
+            var filteredColorList = possiblebeers.Where(pb => pb.ToLower().Contains(color.ToLower()));
 
-            var randomFromList = filteredList.ElementAt(randomizer.Next(filteredList.Count() - 1));
+            var results = new List<string>();
+            foreach(var line in filteredColorList)
+            {
+                var splitted = line.Split(',');
+                if (taste == "Bitter" && Int32.Parse(splitted[2]) > 20)
+                    results.Add(line);
+                else if (taste == "Sweet" && Int32.Parse(splitted[3]) > 2)
+                    results.Add(line);
+                else if (taste == "Sour" && Int32.Parse(splitted[4]) > 2)
+                    results.Add(line);
+            }
+            
+            var randomFromList = results.ElementAt(randomizer.Next(results.Count() - 1));
 
             var randomBeer = randomFromList.Split(',')[0];
 
