@@ -68,7 +68,7 @@ namespace Bot_Application1.Dialogs
                 await context.PostAsync($"Ok, so you like a {color} beer with a {taste} taste");
                 await context.PostAsync($"We suggest to you {beerChoice}");
             }
-            PromptDialog.Confirm(context, OnStartAgain, "You still thirsty?");
+            PromptDialog.Confirm(context, OnStartAgain, "Looking for the next hopportunity?");
         }
 
         private async Task OnStartAgain(IDialogContext context, IAwaitable<bool> result)
