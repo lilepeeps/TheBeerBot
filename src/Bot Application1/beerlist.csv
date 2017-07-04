@@ -1,28 +1,28 @@
-beer,color,bitter,sweet,sour,category
-duvel,blond,32,0,0,classic
-lindemans kriek,fruit,10,5,2,summer
-leffe blond,fblond,20,2,0,classic
-westmalle dubbel,dark,28,1,4,classic
-westmalle tripel,blond,36,1,0,classic
-lindemans poecheresse,fruit,10,5,2,summer
-liefmans goudenband,darki,9,0,5,exclusive
-vedett pils,blond,17,0,0,hip
-vedett ipa,amber,40,1,0,summer
-vedett extra white,blond,10,0,0,summer
-orval,amber,32,0,0,classic
-oer,blond,20,1,0,hip
-cornet,blond,20,1,0,hip
-bolleke koninck,amber,24,1,0,classic
-cristal alken,blond,17,0,0,smooth
-delta ipa,amber,45,1,0,hip
-hopus,blond,40,0,0,hip
-lachouffe,blond,20,1,0,classic
-macchouffe,dark,20,1,2,classic
-chimay blue,dark,30,2,0,classic
-rochefort 10,dark,27,2,0,classic
-lindemans duvee rene,blond,10,0,2,hip
-bellevue geuze,blond,10,0,2,hip
-boon geuze mariage parfait,blond,10,0,2,hip
-duvel tripel hop,blond,44,1,0,exclusive
-rochefort 6,dark,18,2,0,classic
-chimay rouge,dark,24,2,0,classic
+beer,color,bitter,sweet,sour,category,photo,info
+bellevue geuze,blond,10,0,2,hip,bellevuegeuze.png,
+bolleke koninck,amber,24,1,0,classic,bollekekoninck.png,
+boon geuze mariage parfait,blond,10,0,2,hip,boongeuzemariageparfait.gif,
+chimay blue,dark,30,2,0,classic,chimayblue.png,
+chimay rouge,dark,24,2,0,classic,chimayrouge.png,
+cornet,blond,20,1,0,hip,cornet.png,
+cristal alken,blond,17,0,0,smooth,cristalalken.png,
+delta ipa,amber,45,1,0,hip,deltaipa.jpg,
+duvel,blond,32,0,0,classic,duvel.png,
+duvel tripel hop,blond,44,1,0,exclusive,duveltripelhop.png,
+hopus,blond,40,0,0,hip,hopus.png,
+lachouffe,blond,20,1,0,classic,lachouffe.png,
+leffe blond,blond,20,2,0,classic,leffeblond.png,
+liefmans goudenband,darki,9,0,5,exclusive,liefmansgoudenband.png,
+lindemans duvee rene,blond,10,0,2,hip,lindemanscuveerene.png,
+lindemans kriek,fruit,10,5,2,summer,lindemanskriek.png,
+lindemans poecheresse,fruit,10,5,2,summer,lindemanspecheresse.png,
+macchouffe,dark,20,1,2,classic,macchouffe.png,
+omer,blond,20,1,0,hip,omer.png,
+orval,amber,32,0,0,classic,orval.png,
+rochefort 10,dark,27,2,0,classic,rochefort10.png,
+rochefort 6,dark,18,2,0,classic,rochefort6.png,
+vedett extra white,blond,10,0,0,summer,vedettextrawhie.png,
+vedett ipa,amber,40,1,0,summer,vedettipa.png,
+vedett pils,blond,17,0,0,hip,vedettpils.png,
+westmalle dubbel,dark,28,1,4,classic,westmalledubbel.png,
+westmalle tripel,blond,36,1,0,classic,westmalletripel.png,
