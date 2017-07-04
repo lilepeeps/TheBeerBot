@@ -56,12 +56,14 @@ namespace Bot_Application1.Dialogs
 
         private async Task OnColorSelected(IDialogContext context, IAwaitable<string> result)
         {
+            context.ConversationData.SetValue("SelectedColor", result);
             await context.PostAsync("Excellent choice!");
             PromptDialog.Choice(context, OnTasteSelected, TasteOptions, "And what is your taste?", GetRandomOptionNotFound());
         }
 
         private async Task OnTasteSelected(IDialogContext context, IAwaitable<string> result)
         {
+            context.ConversationData.SetValue("SelectedTaste", result);
             await context.PostAsync("Excellent choice!");
         }
 
