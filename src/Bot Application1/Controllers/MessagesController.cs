@@ -16,7 +16,7 @@ namespace Bot_Application1
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message || activity.Type == ActivityTypes.ConversationUpdate)
+            if (activity.Type == ActivityTypes.Message)
             {
                 await Conversation.SendAsync(activity, () => new Dialogs.RootDialog(this.RequestContext.VirtualPathRoot));
             }

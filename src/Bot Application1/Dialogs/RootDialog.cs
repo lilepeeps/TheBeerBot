@@ -25,7 +25,7 @@ namespace Bot_Application1.Dialogs
 
         public Task StartAsync(IDialogContext context)
         {
-            OptionNotFound = AllStrings.OptionNotFound.Split(',').ToList();
+            OptionNotFound = "Shit Hoppens, Trouble is brewing, We don't have that option on tap, Tuns of beer are coming down".Split(',').ToList();
             context.Wait(MessageReceivedAsync);
 
             return Task.CompletedTask;
@@ -35,21 +35,8 @@ namespace Bot_Application1.Dialogs
         {
             var activity = await result as Activity;
 
-            if (activity.Type == ActivityTypes.Message)
-            {
-                await context.PostAsync($"Hi, {activity.MembersAdded.First().Name} I am the beer bot.");
-                ShowOptions(context);
-            }
-            else //ConversationUpdated
-            {
-                if (activity.MembersAdded.Any(mem => mem.Name == activity.Recipient.Name))
-                    context.Wait(MessageReceivedAsync);
-                else
-                {
-                    await context.PostAsync($"Hi, {activity.MembersAdded.First().Name} I am the beer bot.");
-                    ShowOptions(context);
-                }
-            }
+            await context.PostAsync($"Hi, I am the beer bot.");
+            ShowOptions(context);
         }
 
         private void ShowOptions(IDialogContext context)
