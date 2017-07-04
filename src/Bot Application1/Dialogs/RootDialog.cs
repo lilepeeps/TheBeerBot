@@ -12,9 +12,11 @@ namespace Bot_Application1.Dialogs
     {
         private List<string> ColorOptions = new List<string> { "Blonde", "Amber", "Fruit", "Dark" };
         private List<string> TasteOptions = new List<string> { "Bitter", "Sweet", "Sour" };
+        private List<string> OptionNotFound = new List<string>();
 
         public Task StartAsync(IDialogContext context)
         {
+            OptionNotFound = AllStrings.OptionNotFound.Split(',').ToList();
             context.Wait(MessageReceivedAsync);
 
             return Task.CompletedTask;
@@ -49,18 +51,23 @@ namespace Bot_Application1.Dialogs
 
         private void ShowOptions(IDialogContext context)
         {
-            PromptDialog.Choice(context, OnColorSelected, ColorOptions, "What color of beer do you like?", "Not a valid option");
+            PromptDialog.Choice(context, OnColorSelected, ColorOptions, "What color of beer do you like?", GetRandomOptionNotFound());
         }
 
         private async Task OnColorSelected(IDialogContext context, IAwaitable<string> result)
         {
             await context.PostAsync("Excellent choice!");
-            PromptDialog.Choice(context, OnTasteSelected, TasteOptions, "And what is your taste?", "Sorry, that's not a valid choice");
+            PromptDialog.Choice(context, OnTasteSelected, TasteOptions, "And what is your taste?", GetRandomOptionNotFound());
         }
 
         private async Task OnTasteSelected(IDialogContext context, IAwaitable<string> result)
         {
             await context.PostAsync("Excellent choice!");
+        }
+
+        private string GetRandomOptionNotFound()
+        {
+            return OptionNotFound[0];
         }
 
     }
