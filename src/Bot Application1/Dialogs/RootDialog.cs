@@ -35,10 +35,12 @@ namespace Bot_Application1.Dialogs
             else //ConversationUpdated
             {
                 if (activity.MembersAdded.Any(mem => mem.Name == activity.Recipient.Name))
-                    return;
-
-                await context.PostAsync($"Hi, {activity.MembersAdded.First().Name} I am the beer bot.");
-                ShowOptions(context);
+                    context.Wait(MessageReceivedAsync);
+                else
+                {
+                    await context.PostAsync($"Hi, {activity.MembersAdded.First().Name} I am the beer bot.");
+                    ShowOptions(context);
+                }
             }
 
         }
