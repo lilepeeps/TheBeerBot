@@ -13,6 +13,7 @@ namespace Bot_Application1.Dialogs
         private List<string> ColorOptions = new List<string> { "Blonde", "Amber", "Fruit", "Dark" };
         private List<string> TasteOptions = new List<string> { "Bitter", "Sweet", "Sour" };
         private List<string> OptionNotFound = new List<string>();
+        private Random randomizer = new Random(System.DateTime.Now.Millisecond);
 
         public Task StartAsync(IDialogContext context)
         {
@@ -69,8 +70,7 @@ namespace Bot_Application1.Dialogs
 
         private string GetRandomOptionNotFound()
         {
-            return OptionNotFound[0];
+            return OptionNotFound[randomizer.Next(OptionNotFound.Count -1)];
         }
-
     }
 }
