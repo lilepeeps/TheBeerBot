@@ -35,7 +35,7 @@ namespace Bot_Application1.Dialogs
         {
             var activity = await result as Activity;
 
-            await context.PostAsync($"Hi, I am the beer bot.");
+            await context.PostAsync($"Hi, I am the Beer Pressure Bot.");
             ShowOptions(context);
         }
 
