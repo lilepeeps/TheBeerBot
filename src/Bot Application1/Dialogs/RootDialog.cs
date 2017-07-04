@@ -15,7 +15,7 @@ namespace Bot_Application1.Dialogs
         private List<string> ColorOptions = new List<string> { "Blond", "Amber", "Fruit", "Dark" };
         private List<string> TasteOptions = new List<string> { "Bitter", "Sweet", "Sour" };
         private List<string> OptionNotFound = new List<string>();
-        private Random randomizer = new Random(System.DateTime.Now.Millisecond);
+        private Random randomizer = new Random(DateTime.Now.Millisecond);
         private string AppPath;
 
         public RootDialog(string appPath)
@@ -37,13 +37,8 @@ namespace Bot_Application1.Dialogs
 
             if (activity.Type == ActivityTypes.Message)
             {
-                // calculate something for us to return
-                int length = (activity.Text ?? string.Empty).Length;
-
-                // return our reply to the user
-                await context.PostAsync($"You sent {activity.Text} which was {length} characters");
-
-                context.Wait(MessageReceivedAsync);
+                await context.PostAsync($"Hi, {activity.MembersAdded.First().Name} I am the beer bot.");
+                ShowOptions(context);
             }
             else //ConversationUpdated
             {
@@ -55,7 +50,6 @@ namespace Bot_Application1.Dialogs
                     ShowOptions(context);
                 }
             }
-
         }
 
         private void ShowOptions(IDialogContext context)
@@ -78,8 +72,28 @@ namespace Bot_Application1.Dialogs
             var taste = context.ConversationData.GetValue<string>("SelectedTaste");
             var beerChoice = SelectedBeer(color, taste);
 
-            await context.PostAsync($"Ok, so you like a {color} beer with a {taste} taste");
-            await context.PostAsync($"We suggest to you {beerChoice}");
+            if (beerChoice == string.Empty)
+            {
+                await context.PostAsync("Sorry, we couldn't find a beer for your taste.");
+            }
+            else
+            {
+                await context.PostAsync($"Ok, so you like a {color} beer with a {taste} taste");
+                await context.PostAsync($"We suggest to you {beerChoice}");
+            }
+            PromptDialog.Confirm(context, OnStartAgain, "You still thirsty?");
+        }
+
+        private async Task OnStartAgain(IDialogContext context, IAwaitable<bool> result)
+        {
+            var choice = await result;
+            if (choice)
+                ShowOptions(context);
+            else
+            {
+                await context.PostAsync("It was nice choosing beer with you. Goodbye!");
+                context.EndConversation("200");
+            }
         }
 
         private string SelectedBeer(string color, string taste)
@@ -100,6 +114,8 @@ namespace Bot_Application1.Dialogs
             var possiblebeers = strContent.Split('\n');
 
             var filteredColorList = possiblebeers.Where(pb => pb.ToLower().Contains(color.ToLower()));
+            if (filteredColorList.Count() <= 0)
+                return string.Empty;
 
             var results = new List<string>();
             foreach(var line in filteredColorList)
@@ -112,7 +128,10 @@ namespace Bot_Application1.Dialogs
                 else if (taste == "Sour" && Int32.Parse(splitted[4]) > 2)
                     results.Add(line);
             }
-            
+
+            if (results.Count() <= 0)
+                return string.Empty;
+
             var randomFromList = results.ElementAt(randomizer.Next(results.Count() - 1));
 
             var randomBeer = randomFromList.Split(',')[0];
