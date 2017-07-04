@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading;
 
 namespace Bot_Application1.Dialogs
 {
@@ -66,6 +67,16 @@ namespace Bot_Application1.Dialogs
             else
             {
                 await context.PostAsync($"Ok, so you like a {color} beer with a {taste} taste");
+                var replyMessage = context.MakeMessage();
+                replyMessage.Attachments.Add(new Attachment()
+                {
+                    ContentUrl = "https://media4.giphy.com/media/zrj0yPfw3kGTS/giphy.gif",
+                    ContentType = "image/gif",
+                    Name = "Processing.gif"
+                });
+                await context.PostAsync("Thinking ... ");
+                await context.PostAsync(replyMessage);
+                Thread.Sleep(3000);
                 await context.PostAsync($"We suggest to you {beerChoice}");
             }
             PromptDialog.Confirm(context, OnStartAgain, "You still thirsty?");
