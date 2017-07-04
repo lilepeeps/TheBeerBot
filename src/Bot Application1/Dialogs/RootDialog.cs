@@ -78,7 +78,7 @@ namespace Bot_Application1.Dialogs
                 ShowOptions(context);
             else
             {
-                await context.PostAsync("It was nice choosing beer with you. Goodbye!");
+                await context.PostAsync("It was pouring drinks for you. Cheers!");
                 context.EndConversation("200");
             }
         }
