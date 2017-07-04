@@ -36,7 +36,7 @@ namespace Bot_Application1.Dialogs
         {
             var activity = await result as Activity;
 
-            await context.PostAsync($"Hi, I am the beer bot.");
+            await context.PostAsync($"Hi, I am the Beer Pressure Bot.");
             ShowOptions(context);
         }
 
@@ -79,7 +79,7 @@ namespace Bot_Application1.Dialogs
                 Thread.Sleep(3000);
                 await context.PostAsync($"We suggest to you {beerChoice}");
             }
-            PromptDialog.Confirm(context, OnStartAgain, "You still thirsty?");
+            PromptDialog.Confirm(context, OnStartAgain, "Looking for the next hopportunity?");
         }
 
         private async Task OnStartAgain(IDialogContext context, IAwaitable<bool> result)
@@ -89,7 +89,7 @@ namespace Bot_Application1.Dialogs
                 ShowOptions(context);
             else
             {
-                await context.PostAsync("It was nice choosing beer with you. Goodbye!");
+                await context.PostAsync("It was pouring drinks for you. Cheers!");
                 context.EndConversation("200");
             }
         }
