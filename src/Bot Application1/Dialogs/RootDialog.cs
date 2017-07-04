@@ -66,7 +66,7 @@ namespace Bot_Application1.Dialogs
             else
             {
                 await context.PostAsync($"Ok, so you like a {color} beer with a {taste} taste");
-                await context.PostAsync($"We suggest to you {beerChoice}");
+                await context.PostAsync($"We suggest you to enjoy a {beerChoice}");
             }
             PromptDialog.Confirm(context, OnStartAgain, "Looking for the next hopportunity?");
         }
