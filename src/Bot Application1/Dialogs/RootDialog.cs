@@ -26,7 +26,7 @@ namespace Bot_Application1.Dialogs
 
         public Task StartAsync(IDialogContext context)
         {
-            OptionNotFound = "Shit Hoppens, Trouble is brewing, We don't have that option on tap, Tuns of beer are coming down".Split(',').ToList();
+            OptionNotFound = "Shit Hoppens, Trouble is brewing, We don't have that option on tap, Tuns of beer are coming down".Split('|').ToList();
             context.Wait(MessageReceivedAsync);
 
             return Task.CompletedTask;
@@ -60,7 +60,7 @@ namespace Bot_Application1.Dialogs
             var taste = context.ConversationData.GetValue<string>("SelectedTaste");
             var beerChoice = SelectedBeer(color, taste);
 
-            if (beerChoice == string.Empty)
+            if (beerChoice == null)
             {
                 await context.PostAsync("Sorry, we couldn't find a beer for your taste.");
             }
@@ -76,8 +76,16 @@ namespace Bot_Application1.Dialogs
                 });
                 await context.PostAsync("Thinking ... ");
                 await context.PostAsync(replyMessage);
-                Thread.Sleep(3000);
-                await context.PostAsync($"We suggest to you {beerChoice}");
+                await context.PostAsync($"We suggest to you {beerChoice.Name}");
+                var replyBeerMessage = context.MakeMessage();
+                replyBeerMessage.Attachments.Add(new Attachment
+                {
+                    ContentUrl = $"https://github.com/vermegi/TheBeerBot/raw/master/src/Bot%20Application1/photos/{beerChoice.Pic}",
+                    ContentType = "image/png",
+                    Name = "Beerpic.png"
+                });
+                await context.PostAsync(replyBeerMessage);
+                await context.PostAsync(beerChoice.Explanation);
             }
             PromptDialog.Confirm(context, OnStartAgain, "Looking for the next hopportunity?");
         }
@@ -94,7 +102,7 @@ namespace Bot_Application1.Dialogs
             }
         }
 
-        private string SelectedBeer(string color, string taste)
+        private Beer SelectedBeer(string color, string taste)
         {
             var filepath = "https://raw.githubusercontent.com/vermegi/TheBeerBot/master/src/Bot%20Application1/beerlist.csv";
             var webrequest = WebRequest.Create(filepath);
@@ -113,12 +121,12 @@ namespace Bot_Application1.Dialogs
 
             var filteredColorList = possiblebeers.Where(pb => pb.ToLower().Contains(color.ToLower()));
             if (filteredColorList.Count() <= 0)
-                return string.Empty;
+                return null;
 
             var results = new List<string>();
             foreach(var line in filteredColorList)
             {
-                var splitted = line.Split(',');
+                var splitted = line.Split('|');
                 if (taste == "Bitter" && Int32.Parse(splitted[2]) > 20)
                     results.Add(line);
                 else if (taste == "Sweet" && Int32.Parse(splitted[3]) > 2)
@@ -128,18 +136,28 @@ namespace Bot_Application1.Dialogs
             }
 
             if (results.Count() <= 0)
-                return string.Empty;
+                return null;
 
             var randomFromList = results.ElementAt(randomizer.Next(results.Count() - 1));
 
-            var randomBeer = randomFromList.Split(',')[0];
+            var randomBeer = randomFromList.Split('|')[0];
+            var randomPic = randomFromList.Split('|')[6];
+            var randomText = randomFromList.Split('|')[7];
 
-            return randomBeer;
+            return new Beer { Name = randomBeer, Pic = randomPic, Explanation = randomText };
         }
 
         private string GetRandomOptionNotFound()
         {
             return OptionNotFound[randomizer.Next(OptionNotFound.Count -1)];
         }
+    }
+
+    public class Beer
+    {
+        public string Name { get; set; }
+        public string Pic { get; set; }
+
+        public string Explanation { get; set; }
     }
 }
