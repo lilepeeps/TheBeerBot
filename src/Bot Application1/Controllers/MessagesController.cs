@@ -18,7 +18,7 @@ namespace Bot_Application1
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog(this.RequestContext.VirtualPathRoot));
+                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
             }
             else
             {
